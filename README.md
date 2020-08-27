@@ -10,5 +10,6 @@ Project status
 | An event binder for DOM elements | DONE |
 | Websocket client | DONE |
 | GET, POST and X http client | DONE |
-| DOM binding for reading values into a Go struct instance | wip |
+| DOM binding for reading values into a Go struct once | testing |
+| DOM binding for reading values into a Go struct on change | testing |
 | For loops on DOM elements |  |

@@ -7,10 +7,8 @@ import (
 	"syscall/js"
 )
 
-var GoTagDOM = "dom"
-
-func NewDOMReadBinder() (result *DOMMarshaler, err error) {
-	result = &DOMMarshaler{
+func NewDOMMarshaller() (result *DOMMarshaller, err error) {
+	result = &DOMMarshaller{
 		jsDoc: js.Global().Get("document"),
 	}
 	if !result.jsDoc.Truthy() {
@@ -20,11 +18,11 @@ func NewDOMReadBinder() (result *DOMMarshaler, err error) {
 	return
 }
 
-type DOMMarshaler struct {
+type DOMMarshaller struct {
 	jsDoc js.Value
 }
 
-func (d *DOMMarshaler) ReadAll(i interface{}) {
+func (d *DOMMarshaller) ReadAll(i interface{}) {
 	t := reflect.TypeOf(i)
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
@@ -35,13 +33,12 @@ func (d *DOMMarshaler) ReadAll(i interface{}) {
 			if err != nil {
 				continue
 			}
-			domValue := element.Get("value").String()
+			domValue := element.Get("value").String() //Possibly use other fields
 			ps := reflect.ValueOf(&i)
 			structField := ps.FieldByName(field.Name)
 			if structField.IsValid() && structField.CanSet() && structField.Kind() == reflect.String {
 				structField.SetString(domValue)
 			}
 		}
-
 	}
 }

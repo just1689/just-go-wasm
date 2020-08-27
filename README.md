@@ -2,7 +2,7 @@
 
 A tiny Go library for building wasm web applications.
 
-Features:
+Project status
 
 | Feature | Status |
 | --- | --- |

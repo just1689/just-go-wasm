@@ -10,9 +10,8 @@ func BindEvent(elementID, event string, notify func()) (err error) {
 	if err != nil {
 		return
 	}
-	element.Call("addEventListener", event, js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+	util.AddEventListener(element, event, func(result []js.Value) {
 		notify()
-		return nil
-	}))
+	})
 	return
 }

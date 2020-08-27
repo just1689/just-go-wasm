@@ -19,3 +19,12 @@ func GetElementByID(elementID string) (element js.Value, err error) {
 	}
 	return
 }
+
+func GetElementByIDWithDoc(elementID string, jsDoc js.Value) (element js.Value, err error) {
+	element = jsDoc.Call("getElementById", elementID)
+	if !element.Truthy() {
+		err = errors.New(fmt.Sprint("could not get element by id: ", elementID))
+		return
+	}
+	return
+}

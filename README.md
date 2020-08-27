@@ -6,9 +6,9 @@ Project status
 
 | Feature | Status |
 | --- | --- |
-| Fields that change a DOM element's field on change | Implemented, not tested |
-| An event binder for DOM elements | Implemented, not tested |
-| Websocket client | Implemented, not tested |
+| Fields that change a DOM element's field on change | DONE |
+| An event binder for DOM elements | DONE |
+| Websocket client | DONE |
+| Added GET, POST and X http client | Implemented, not tested |
+| DOM binding for reading values into a Go struct instance | wip |
 | For loops on DOM elements |  |
-| DOM binding for reading values into a Go struct instance | WIP |
-

@@ -30,18 +30,17 @@ func (w *WSClient) Send(s string) {
 }
 
 func (w *WSClient) Connect() {
-	ws := js.Global().Get("WebSocket").New(w.url)
-	util.AddEventListener(ws, "open", func(result []js.Value) {
+	w.ws = js.Global().Get("WebSocket").New(w.url)
+	util.AddEventListener(w.ws, "open", func(result []js.Value) {
 		w.handlers.HandleOnOpen()
 	})
-	util.AddEventListener(ws, "message", func(result []js.Value) {
+	util.AddEventListener(w.ws, "message", func(result []js.Value) {
 		if len(result) < 1 {
 			return
 		}
 		w.handlers.HandleMessage(result[0].Get("data").String())
 	})
-	util.AddEventListener(ws, "close", func(result []js.Value) {
+	util.AddEventListener(w.ws, "close", func(result []js.Value) {
 		w.handlers.HandleClose()
 	})
-
 }

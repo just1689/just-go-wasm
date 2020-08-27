@@ -1,3 +1,5 @@
 package dom
 
-type Setter func(field, value string)
+type HasSetter interface {
+	Setter(field, value string)
+}

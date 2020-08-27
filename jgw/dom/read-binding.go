@@ -9,7 +9,7 @@ import (
 	"syscall/js"
 )
 
-func NewDOMBinder(item interface{}, setter Setter) (result *DOMBinder, err error) {
+func NewDOMBinder(item HasSetter) (result *DOMBinder, err error) {
 	result = &DOMBinder{
 		jsDoc: js.Global().Get("document"),
 	}
@@ -17,7 +17,7 @@ func NewDOMBinder(item interface{}, setter Setter) (result *DOMBinder, err error
 		err = errors.New("could not get document")
 		return
 	}
-	result.bind(item, setter)
+	result.bind(item)
 	return
 }
 
@@ -25,7 +25,7 @@ type DOMBinder struct {
 	jsDoc js.Value
 }
 
-func (d *DOMBinder) bind(item interface{}, setter Setter) {
+func (d *DOMBinder) bind(item HasSetter) {
 	t := reflect.TypeOf(item)
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
@@ -42,7 +42,7 @@ func (d *DOMBinder) bind(item interface{}, setter Setter) {
 		fmt.Println("")
 		util.AddEventListener(el, "change", func(_ []js.Value) {
 			domValue := el.Get("value").String() //Possibly use other fields
-			setter(field.Name, domValue)
+			item.Setter(field.Name, domValue)
 		})
 	}
 }

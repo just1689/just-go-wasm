@@ -22,8 +22,8 @@ type DOMMarshaller struct {
 	jsDoc js.Value
 }
 
-func (d *DOMMarshaller) ReadAll(i interface{}, setter Setter) {
-	t := reflect.TypeOf(i)
+func (d *DOMMarshaller) ReadAll(item HasSetter) {
+	t := reflect.TypeOf(item)
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		tag := field.Tag
@@ -34,7 +34,7 @@ func (d *DOMMarshaller) ReadAll(i interface{}, setter Setter) {
 				continue
 			}
 			domValue := element.Get("value").String() //Possibly use other fields
-			setter(field.Name, domValue)
+			item.Setter(field.Name, domValue)
 		}
 	}
 }

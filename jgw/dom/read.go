@@ -7,8 +7,10 @@ import (
 	"syscall/js"
 )
 
-func NewDOMReadBinder() (result *DOMReadBinder, err error) {
-	result = &DOMReadBinder{
+var GoTagDOM = "dom"
+
+func NewDOMReadBinder() (result *DOMMarshaler, err error) {
+	result = &DOMMarshaler{
 		jsDoc: js.Global().Get("document"),
 	}
 	if !result.jsDoc.Truthy() {
@@ -18,16 +20,16 @@ func NewDOMReadBinder() (result *DOMReadBinder, err error) {
 	return
 }
 
-type DOMReadBinder struct {
+type DOMMarshaler struct {
 	jsDoc js.Value
 }
 
-func (d *DOMReadBinder) ReadDOMToStruct(i interface{}) {
+func (d *DOMMarshaler) ReadAll(i interface{}) {
 	t := reflect.TypeOf(i)
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		tag := field.Tag
-		dom := tag.Get("dom")
+		dom := tag.Get(GoTagDOM)
 		if dom != "" {
 			element, err := util.GetElementByIDWithDoc(dom, d.jsDoc)
 			if err != nil {
